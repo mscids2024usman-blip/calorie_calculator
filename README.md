@@ -1,28 +1,23 @@
-Calorie Calculator
-The Calorie Calculator is a simple and user-friendly application designed to help users estimate their daily calorie needs based on personal inputs such as age, gender, weight, height, and activity level. This project aims to promote healthy living by enabling individuals to track and manage their calorie intake effectively.
+# 💪 Calorie Calculator App
 
-Features
-Provides personalized calorie targets for maintenance, weight loss, or gain.
+## Overview
+The **Calorie Calculator App** is an interactive web application built using **Python** and **Streamlit**.  
+It helps users calculate their **BMR (Basal Metabolic Rate)**, **TDEE (Total Daily Energy Expenditure)**, search food nutrition details, and even **predict calories** from macronutrients using a **Machine Learning model (Linear Regression)**.
 
-Clear and intuitive user interface for easy operation.
+This project was created by **Usman Khan** as part of the **ISA (Internal Skill Assessment)** for the **Data Science** program.
 
-Input validation and error handling to ensure accurate data entry.
+---
 
-How to Use
-Enter your personal details in the respective fields.
+## Features
+✅ **BMR & TDEE Calculator** — Calculates calorie maintenance based on user input (weight, height, age, activity).  
+✅ **Food Search** — Quickly look up calorie and macro details for common foods.  
+✅ **ML Calorie Prediction** — Predict total calories from given protein, carbs, and fat using Linear Regression.  
+✅ **Pie Chart Visualization** — Displays macro calorie split visually for better understanding.  
+✅ **Clean UI** — Built with Streamlit for a modern, easy-to-use interface.
 
-Submit to calculate your daily calorie needs.
+---
 
-Use the results to plan your meals and exercise accordingly.
-
-Project Structure
-Core calculation logic implemented in functions.
-
-Modular and clean code for easy understanding and extension.
-
-Includes documentation and comments for maintainability.
-
-Purpose
-This project is developed as a learning exercise to understand basic programming concepts, user input handling, and GitHub version control through meaningful commits. It showcases the development process of an individual project, reflecting step-by-step progress and improvements.
-
-Feel free to explore, use, and contribute improvements!
+## How to Use
+1. Run the Streamlit app:
+   ```bash
+   streamlit run app.py
