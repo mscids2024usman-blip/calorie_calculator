@@ -1,4 +1,4 @@
-food,calories,carbohydrates,Protein,Fat,Freesugar(g),Fibre(g),Cholestrol(mg),Calcium(mg)
+food,calories,carbs,Protein,Fat,Freesugar(g),Fibre(g),Cholestrol(mg),Calcium(mg)
 Butternaan,300,50,7,10,2,2,15,50
 Cupcake,200,30,2,8,20,0.5,20,20
 Donuts,250,30,3,12,10,1,20,20
