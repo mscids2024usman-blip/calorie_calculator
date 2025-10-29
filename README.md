@@ -1,7 +1,7 @@
 # 🍎 Smart Calorie & Nutrition Analyzer
 
 ### Developed by **Usman Khan**  
-B.Sc. (IMSc) Data Science | ISA Project 2025  
+ (IMSc) Data Science | ISA Project 2025  
 
 ---
 
