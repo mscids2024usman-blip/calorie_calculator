@@ -1,10 +1,8 @@
 import streamlit as st
 import pandas as pd
 
-# Page title
 st.title("📊 Dataset Information")
 
-# File uploader for dataset
 uploaded_file = st.file_uploader("Upload your dataset (CSV)", type=["csv"])
 
 if uploaded_file is not None:
@@ -31,6 +29,6 @@ if uploaded_file is not None:
 else:
     st.info("👆 Please upload your dataset to view details.")
 
-# Footer
+
 st.markdown("---")
 st.caption("Created by Usman Khan")

@@ -53,6 +53,6 @@ if uploaded_file is not None:
 else:
     st.info("👆 Upload your dataset to train and test the model.")
 
-# Footer
+
 st.markdown("---")
 st.caption("Created by Usman Khan")

@@ -60,6 +60,5 @@ This project was created for the **Internal Semester Assessment (ISA)** as a dem
 **Thank you for visiting the project! 🙌**
 """)
 
-# Footer
 st.markdown("---")
 st.caption("Created by Usman Khan")

@@ -10,41 +10,71 @@ st.set_page_config(
     layout="wide",
 )
 
-st.markdown(
-    """
-    <style>
-        body {
-            background-color: #0E1117;
-            color: #FAFAFA;
-        }
-        .stApp {
-            background-color: #0E1117;
-            color: #FAFAFA;
-        }
-        h1, h2, h3, h4 {
-            color: #FF4B4B;
-        }
-        .stButton>button {
-            background-color: #FF4B4B;
-            color: white;
-            border-radius: 10px;
-            height: 3em;
-            width: 100%;
-            border: none;
-        }
-        .stButton>button:hover {
-            background-color: #FF6F61;
-            color: white;
-        }
-        .css-1d391kg, .stTextInput, .stNumberInput, .stSelectbox {
-            background-color: #1C1E24;
-            color: white;
-            border-radius: 8px;
-        }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+st.sidebar.title("⚙️ Settings")
+theme = st.sidebar.radio("Choose Theme:", ["🌙 Dark Mode", "☀️ Light Mode"])
+
+if theme == "🌙 Dark Mode":
+    st.markdown("""
+        <style>
+            .stApp {
+                background-color: #0E1117;
+                color: #FAFAFA;
+            }
+            h1, h2, h3, h4 {
+                color: #FF4B4B;
+            }
+            .stButton>button {
+                background-color: #FF4B4B;
+                color: white;
+                border-radius: 10px;
+                height: 3em;
+                width: 100%;
+                border: none;
+            }
+            .stButton>button:hover {
+                background-color: #FF6F61;
+                color: white;
+            }
+            .stTextInput>div>div>input,
+            .stNumberInput input,
+            .stSelectbox div[data-baseweb="select"] > div {
+                background-color: #1C1E24;
+                color: white;
+                border-radius: 8px;
+            }
+        </style>
+    """, unsafe_allow_html=True)
+else:
+    st.markdown("""
+        <style>
+            .stApp {
+                background-color: #FFFFFF;
+                color: #000000;
+            }
+            h1, h2, h3, h4 {
+                color: #2E8B57;
+            }
+            .stButton>button {
+                background-color: #2E8B57;
+                color: white;
+                border-radius: 10px;
+                height: 3em;
+                width: 100%;
+                border: none;
+            }
+            .stButton>button:hover {
+                background-color: #3CB371;
+                color: white;
+            }
+            .stTextInput>div>div>input,
+            .stNumberInput input,
+            .stSelectbox div[data-baseweb="select"] > div {
+                background-color: #F0F0F0;
+                color: black;
+                border-radius: 8px;
+            }
+        </style>
+    """, unsafe_allow_html=True)
 
 st.title("🏋️ Smart Calorie & Nutrition Analyzer")
 st.caption("Developed by Usman Khan | ISA Project 2025")
@@ -143,6 +173,7 @@ if not df.empty and all(col in df.columns for col in ["protein", "carbs", "fat",
         ax.pie([p, c, f], labels=["Protein", "Carbs", "Fat"], autopct='%1.1f%%', startangle=90)
         ax.axis('equal')
         st.pyplot(fig)
+
 
 st.markdown("---")
 st.caption("© 2025 Usman Khan | IMSC Data Science | ISA Project")

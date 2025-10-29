@@ -46,6 +46,5 @@ _Data Science Student_
 - Save user profiles and data history
 """)
 
-# Footer
 st.markdown("---")
 st.caption("Created by Usman Khan")
