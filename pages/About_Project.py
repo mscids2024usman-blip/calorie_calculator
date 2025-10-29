@@ -45,3 +45,7 @@ _Data Science Student_
 - Integrate real-time fitness APIs  
 - Save user profiles and data history
 """)
+
+# Footer
+st.markdown("---")
+st.caption("Created by Usman Khan")

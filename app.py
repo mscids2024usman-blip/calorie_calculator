@@ -1,20 +1,86 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
+import matplotlib.pyplot as plt
 
-st.set_page_config(page_title="Calorie Calculator App", layout="wide")
+st.set_page_config(
+    page_title="Smart Calorie Calculator",
+    page_icon="🍎",
+    layout="wide",
+)
+
+st.markdown(
+    """
+    <style>
+        body {
+            background-color: #0E1117;
+            color: #FAFAFA;
+        }
+        .stApp {
+            background-color: #0E1117;
+            color: #FAFAFA;
+        }
+        h1, h2, h3, h4 {
+            color: #FF4B4B;
+        }
+        .stButton>button {
+            background-color: #FF4B4B;
+            color: white;
+            border-radius: 10px;
+            height: 3em;
+            width: 100%;
+            border: none;
+        }
+        .stButton>button:hover {
+            background-color: #FF6F61;
+            color: white;
+        }
+        .css-1d391kg, .stTextInput, .stNumberInput, .stSelectbox {
+            background-color: #1C1E24;
+            color: white;
+            border-radius: 8px;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+st.title("🏋️ Smart Calorie & Nutrition Analyzer")
+st.caption("Developed by Usman Khan | ISA Project 2025")
+st.markdown("---")
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv("food_data.csv")
-    df.columns = [c.strip().lower() for c in df.columns]
-    df.dropna(subset=["calories"], inplace=True)
-    return df
+    try:
+        df = pd.read_csv("food_data.csv")
+        df.columns = df.columns.str.lower()
+        df.fillna(0, inplace=True)
+        return df
+    except Exception as e:
+        st.error(f"Error loading dataset: {e}")
+        return pd.DataFrame()
 
 df = load_data()
 
+st.header("📏 Personal Calorie Calculator")
+
+col1, col2, col3 = st.columns(3)
+with col1:
+    weight = st.number_input("Weight (kg)", 30, 200, 70)
+with col2:
+    height = st.number_input("Height (cm)", 100, 220, 175)
+with col3:
+    age = st.number_input("Age (years)", 10, 80, 20)
+
+gender = st.selectbox("Gender", ["Male", "Female"])
+activity = st.selectbox("Activity Level", [
+    "Sedentary (little/no exercise)",
+    "Light (1–3 days/week)",
+    "Moderate (3–5 days/week)",
+    "Active (6–7 days/week)",
+    "Very Active (hard exercise & physical job)"
+])
 
 def calculate_bmr(weight, height, age, gender):
     if gender == "Male":
@@ -22,74 +88,61 @@ def calculate_bmr(weight, height, age, gender):
     else:
         return 10 * weight + 6.25 * height - 5 * age - 161
 
-def calculate_tdee(bmr, activity_level):
-    activity_multipliers = {
+def get_activity_factor(activity):
+    factors = {
         "Sedentary (little/no exercise)": 1.2,
-        "Lightly active (1-3 days/week)": 1.375,
-        "Moderately active (3-5 days/week)": 1.55,
-        "Very active (6-7 days/week)": 1.725,
-        "Super active (athlete)": 1.9,
+        "Light (1–3 days/week)": 1.375,
+        "Moderate (3–5 days/week)": 1.55,
+        "Active (6–7 days/week)": 1.725,
+        "Very Active (hard exercise & physical job)": 1.9
     }
-    return bmr * activity_multipliers[activity_level]
+    return factors[activity]
 
-
-st.title("💪 Calorie Calculator App")
-st.write("Track calories, calculate BMR/TDEE, and explore food nutrition.")
-
-
-col1, col2 = st.columns(2)
-with col1:
-    gender = st.selectbox("Gender", ["Male", "Female"])
-    weight = st.number_input("Weight (kg)", min_value=30.0, max_value=200.0, value=70.0)
-    height = st.number_input("Height (cm)", min_value=100.0, max_value=250.0, value=175.0)
-with col2:
-    age = st.number_input("Age", min_value=10, max_value=100, value=20)
-    activity = st.selectbox("Activity Level", [
-        "Sedentary (little/no exercise)",
-        "Lightly active (1-3 days/week)",
-        "Moderately active (3-5 days/week)",
-        "Very active (6-7 days/week)",
-        "Super active (athlete)"
-    ])
-
-
-if st.button("Calculate Calories"):
+if st.button("🔢 Calculate My Calories"):
     bmr = calculate_bmr(weight, height, age, gender)
-    tdee = calculate_tdee(bmr, activity)
-    st.success(f"**Your BMR:** {bmr:.2f} kcal/day")
-    st.info(f"**Your TDEE (maintenance calories):** {tdee:.2f} kcal/day")
+    tdee = bmr * get_activity_factor(activity)
+    st.success(f"Your BMR is {bmr:.2f} kcal/day")
+    st.success(f"Your TDEE (Total Daily Energy Expenditure) is {tdee:.2f} kcal/day")
 
+st.markdown("---")
+st.header("🍱 Food Nutrition Lookup")
 
-st.subheader("🍎 Search Food Items")
-query = st.text_input("Enter food name (e.g., rice, egg, chicken):").lower()
+if not df.empty:
+    food_query = st.text_input("Search for a food item:")
+    if food_query:
+        results = df[df["food"].str.contains(food_query, case=False, na=False)]
+        if not results.empty:
+            st.dataframe(results)
+        else:
+            st.warning("No matching food found.")
+else:
+    st.warning("Dataset not loaded. Please make sure 'food_data.csv' exists.")
 
-if query:
-    results = df[df["food"].str.contains(query, case=False, na=False)]
-    if not results.empty:
-        st.dataframe(results[["food", "calories", "protein", "carbs", "fat"]].head(10))
-    else:
-        st.warning("No matching food found.")
+st.markdown("---")
+st.header("🤖 Predict Calories from Macronutrients")
 
+if not df.empty and all(col in df.columns for col in ["protein", "carbs", "fat", "calories"]):
+    X = df[["protein", "carbs", "fat"]]
+    y = df["calories"]
+    model = LinearRegression()
+    model.fit(X, y)
 
-st.subheader("🤖 Predict Calories from Macros (Protein, Carbs, Fat)")
-X = df[["protein", "carbs", "fat"]]
-y = df["calories"]
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        p = st.number_input("Protein (g)", 0, 200, 25)
+    with c2:
+        c = st.number_input("Carbs (g)", 0, 200, 40)
+    with c3:
+        f = st.number_input("Fat (g)", 0, 100, 10)
 
-model = LinearRegression()
-model.fit(X, y)
+    if st.button("Predict Calories 🔥"):
+        pred = model.predict(np.array([[p, c, f]]))[0]
+        st.success(f"Estimated Calories: {pred:.2f} kcal")
 
-p = st.number_input("Protein (g)", 0.0, 200.0, 20.0)
-c = st.number_input("Carbs (g)", 0.0, 300.0, 50.0)
-f = st.number_input("Fat (g)", 0.0, 100.0, 10.0)
+        fig, ax = plt.subplots()
+        ax.pie([p, c, f], labels=["Protein", "Carbs", "Fat"], autopct='%1.1f%%', startangle=90)
+        ax.axis('equal')
+        st.pyplot(fig)
 
-if st.button("Predict Calories"):
-    pred = model.predict([[p, c, f]])[0]
-    st.success(f"Estimated Calories: {pred:.2f} kcal")
-
-    # Pie Chart
-    labels = ["Protein", "Carbs", "Fat"]
-    values = [p*4, c*4, f*9] 
-    fig, ax = plt.subplots()
-    ax.pie(values, labels=labels, autopct="%1.1f%%", startangle=90)
-    ax.set_title("Macro Calorie Breakdown")
-    st.pyplot(fig)
+st.markdown("---")
+st.caption("© 2025 Usman Khan | IMSC Data Science | ISA Project")

@@ -33,4 +33,4 @@ else:
 
 # Footer
 st.markdown("---")
-st.caption("Created by Usman Khan | ISA Project 2025")
+st.caption("Created by Usman Khan")
