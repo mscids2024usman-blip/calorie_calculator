@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 st.set_page_config(
     page_title="Smart Calorie Calculator",
@@ -11,67 +12,45 @@ st.set_page_config(
 )
 
 st.sidebar.title("⚙️ Settings")
-theme = st.sidebar.radio("Choose Theme:", ["🌙 Dark Mode", "☀️ Light Mode"])
+theme = st.sidebar.radio("Theme", ["🌙 Dark Mode", "☀️ Light Mode"])
 
 if theme == "🌙 Dark Mode":
     st.markdown("""
         <style>
-            .stApp {
-                background-color: #0E1117;
-                color: #FAFAFA;
-            }
-            h1, h2, h3, h4 {
-                color: #FF4B4B;
-            }
+            .stApp { background-color: #0E1117; color: #FAFAFA; }
+            h1, h2, h3, h4 { color: #FF4B4B; }
             .stButton>button {
-                background-color: #FF4B4B;
-                color: white;
-                border-radius: 10px;
-                height: 3em;
-                width: 100%;
+                background-color: #FF4B4B; color: white;
+                border-radius: 10px; height: 3em; width: 100%;
                 border: none;
             }
             .stButton>button:hover {
-                background-color: #FF6F61;
-                color: white;
+                background-color: #FF6F61; color: white;
             }
             .stTextInput>div>div>input,
             .stNumberInput input,
             .stSelectbox div[data-baseweb="select"] > div {
-                background-color: #1C1E24;
-                color: white;
-                border-radius: 8px;
+                background-color: #1C1E24; color: white; border-radius: 8px;
             }
         </style>
     """, unsafe_allow_html=True)
 else:
     st.markdown("""
         <style>
-            .stApp {
-                background-color: #FFFFFF;
-                color: #000000;
-            }
-            h1, h2, h3, h4 {
-                color: #2E8B57;
-            }
+            .stApp { background-color: #FFFFFF; color: #000000; }
+            h1, h2, h3, h4 { color: #2E8B57; }
             .stButton>button {
-                background-color: #2E8B57;
-                color: white;
-                border-radius: 10px;
-                height: 3em;
-                width: 100%;
+                background-color: #2E8B57; color: white;
+                border-radius: 10px; height: 3em; width: 100%;
                 border: none;
             }
             .stButton>button:hover {
-                background-color: #3CB371;
-                color: white;
+                background-color: #3CB371; color: white;
             }
             .stTextInput>div>div>input,
             .stNumberInput input,
             .stSelectbox div[data-baseweb="select"] > div {
-                background-color: #F0F0F0;
-                color: black;
-                border-radius: 8px;
+                background-color: #F0F0F0; color: black; border-radius: 8px;
             }
         </style>
     """, unsafe_allow_html=True)
@@ -87,8 +66,7 @@ def load_data():
         df.columns = df.columns.str.lower()
         df.fillna(0, inplace=True)
         return df
-    except Exception as e:
-        st.error(f"Error loading dataset: {e}")
+    except Exception:
         return pd.DataFrame()
 
 df = load_data()
@@ -115,8 +93,7 @@ activity = st.selectbox("Activity Level", [
 def calculate_bmr(weight, height, age, gender):
     if gender == "Male":
         return 10 * weight + 6.25 * height - 5 * age + 5
-    else:
-        return 10 * weight + 6.25 * height - 5 * age - 161
+    return 10 * weight + 6.25 * height - 5 * age - 161
 
 def get_activity_factor(activity):
     factors = {
@@ -131,8 +108,8 @@ def get_activity_factor(activity):
 if st.button("🔢 Calculate My Calories"):
     bmr = calculate_bmr(weight, height, age, gender)
     tdee = bmr * get_activity_factor(activity)
-    st.success(f"Your BMR is {bmr:.2f} kcal/day")
-    st.success(f"Your TDEE (Total Daily Energy Expenditure) is {tdee:.2f} kcal/day")
+    st.success(f"BMR: {bmr:.2f} kcal/day")
+    st.success(f"TDEE (Total Daily Energy Expenditure): {tdee:.2f} kcal/day")
 
 st.markdown("---")
 st.header("🍱 Food Nutrition Lookup")
@@ -146,7 +123,7 @@ if not df.empty:
         else:
             st.warning("No matching food found.")
 else:
-    st.warning("Dataset not loaded. Please make sure 'food_data.csv' exists.")
+    st.warning("Dataset not loaded. Please make sure 'food_data.csv' exists in the folder.")
 
 st.markdown("---")
 st.header("🤖 Predict Calories from Macronutrients")
@@ -174,6 +151,11 @@ if not df.empty and all(col in df.columns for col in ["protein", "carbs", "fat",
         ax.axis('equal')
         st.pyplot(fig)
 
+        st.subheader("📊 Macro Comparison")
+        fig2, ax2 = plt.subplots()
+        sns.barplot(x=["Protein", "Carbs", "Fat"], y=[p, c, f], ax=ax2)
+        ax2.set_ylabel("Grams")
+        st.pyplot(fig2)
 
 st.markdown("---")
 st.caption("© 2025 Usman Khan | IMSC Data Science | ISA Project")
