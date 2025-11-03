@@ -1,0 +1,93 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{\textbf{Smart Calorie \& Nutrition Analyzer}}
+\author{Usman Khan \\ IMSC Data Science \\ ISA Project 2025}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{1. Problem Statement}
+In today's world, maintaining a healthy lifestyle is a growing challenge due to busy schedules, poor dietary habits, and limited understanding of nutritional requirements. 
+Most people consume food without knowing its calorie composition or daily energy expenditure, leading to weight gain or nutritional deficiencies.  
+To address this issue, the project \textbf{Smart Calorie \& Nutrition Analyzer} aims to build an intelligent tool that helps users:
+\begin{itemize}
+    \item Calculate personal daily calorie requirements based on individual attributes.
+    \item Look up the nutritional values of common foods.
+    \item Predict caloric values using machine learning from macronutrient data.
+\end{itemize}
+This application enables data-driven dietary decisions and promotes healthier eating habits.
+
+\section*{2. Solution}
+The Smart Calorie \& Nutrition Analyzer is implemented using Python and the Streamlit framework for interactive web applications. 
+It integrates user input, nutritional datasets, and a predictive model to offer three main functionalities:
+
+\begin{enumerate}
+    \item \textbf{Personal Calorie Calculator:} Computes Basal Metabolic Rate (BMR) and Total Daily Energy Expenditure (TDEE) using user-provided data such as weight, height, age, and activity level.
+    \item \textbf{Food Nutrition Lookup:} Allows users to search for food items from a dataset (\texttt{food\_data.csv}) and view their macronutrient and calorie content.
+    \item \textbf{Calorie Prediction Model:} Employs Linear Regression to estimate calorie content based on protein, carbohydrate, and fat values.
+\end{enumerate}
+
+The application also offers user interface customization with Dark and Light modes, improving usability and accessibility.
+
+\section*{3. Visualization}
+To provide meaningful insights, the system uses several visualization features that assist users in understanding their dietary composition:
+\begin{itemize}
+    \item \textbf{Pie Chart:} Displays the percentage distribution of protein, carbohydrates, and fat in a given input.
+    \item \textbf{Bar Chart:} Compares macronutrient grams for visual inspection of diet balance.
+    \item \textbf{Interactive Table:} Displays food search results dynamically using \texttt{st.dataframe()}, allowing users to explore food data effectively.
+\end{itemize}
+
+All visualizations are done using \texttt{Matplotlib} and \texttt{Seaborn} libraries.
+
+\section*{4. Formulae}
+
+\subsection*{4.1 Basal Metabolic Rate (BMR)}
+For calculating the basal metabolic rate, the Mifflin-St Jeor equation is used:
+\[
+\text{BMR}_{male} = 10W + 6.25H - 5A + 5
+\]
+\[
+\text{BMR}_{female} = 10W + 6.25H - 5A - 161
+\]
+where:
+\[
+W = \text{weight (kg)}, \quad H = \text{height (cm)}, \quad A = \text{age (years)}
+\]
+
+\subsection*{4.2 Total Daily Energy Expenditure (TDEE)}
+The TDEE is computed using:
+\[
+\text{TDEE} = \text{BMR} \times \text{Activity Factor}
+\]
+
+Activity factors used in this project:
+\begin{align*}
+\text{Sedentary:} & \quad 1.2 \\
+\text{Lightly Active:} & \quad 1.375 \\
+\text{Moderately Active:} & \quad 1.55 \\
+\text{Active:} & \quad 1.725 \\
+\text{Very Active:} & \quad 1.9
+\end{align*}
+
+\subsection*{4.3 Calorie Prediction Model}
+The calorie prediction model is based on the Linear Regression equation:
+\[
+\hat{y} = b_0 + b_1x_1 + b_2x_2 + b_3x_3
+\]
+where:
+\[
+\hat{y} = \text{predicted calories}, \quad x_1 = \text{protein (g)}, \quad x_2 = \text{carbs (g)}, \quad x_3 = \text{fat (g)}
+\]
+
+\section*{5. Conclusion}
+The Smart Calorie \& Nutrition Analyzer serves as an intelligent, interactive, and data-driven diet management tool. 
+By combining user health metrics, machine learning, and real-time visualization, the project offers an accessible way to understand and manage personal nutrition effectively.
+
+\end{document}
